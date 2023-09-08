@@ -20,26 +20,11 @@ public class CheckoutController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(request.getServletContext());
         WebContext context = new WebContext(request, response, request.getServletContext());
-
-        //  response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
-        //check @ in email
-        //check if hasNumbers
-        //check if hasLetters
-
-
-        // if data is valid create order
-
-
-        //and if data is valid load payment page
         engine.process("product/payment.html", context, response.getWriter());
-
-
-
-
-
     }
+
+    
     protected void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException {
         doGet(request, response);
     }
