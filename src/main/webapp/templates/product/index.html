@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="Codecool" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <title>Codecool Shop</title>
+
+    <!-- Bootstrap components -->
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!--Latest compiled and minified Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- End of Bootstrap components -->
+
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
+    <script src="/static/js/main.js" defer></script>
+</head>
+
+<body>
+<div style="background-color: #333333">
+        <div th:if="${user} != 'guest'">
+            <div class="card-text" style ="float: left; margin: 10px;"><a class="btn btn-success" href="/logout">Log out!</a></div>
+            <div class="card-text">
+                <a class="btn btn-success" href="/shopping_cart" style="margin: 10px 10px 10px; float: right">Your shopping cart</a>
+            </div>
+        </div>
+
+    </div>
+    <div th:if="${user}=='guest'">
+        <div class="card-text" style ="float: left; margin: 10px;"><a class="btn btn-success" href="/registration">Register here!</a></div>
+        <div class="card-text" style ="float: left; margin: 10px;"><a class="btn btn-success" href="/login">Log in!</a></div>
+
+    </div>
+
+
+</div>
+<div class="jumbotron text-center" style="height: 200px">
+    <h1><a href="/" style="color: black; text-decoration: none">Codecool Shop</a></h1>
+
+</div>
+
+
+
+
+<dl>
+    <dd>
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Filter by category</button>
+            <div id="myDropdown" class="dropdown-content">
+                <span th:each="category,iterStat : ${all_categories}">
+                    <a th:href="@{'/?category=' + ${category.id}}" th:text="${category.name}"></a>
+                </span>
+            </div>
+        </div>
+    </dd>
+
+    <dd>
+        <div class="dropdown">
+            <button onclick="myFunctionSup()" class="dropbtn">Filter by suppliers</button>
+            <div id="myDropdownSup" class="dropdown-content">
+                <span th:each="supplier,iterStat : ${all_suppliers}">
+                    <a th:href="@{'/?supplier=' + ${supplier.id}}" th:text="${supplier.name}"></a>
+                </span>
+            </div>
+        </div>
+    </dd>
+</dl>
+
+<div class="container">
+<!--    <div class="card">-->
+<!--        <strong th:if="${category.name != null}" th:text="${category.name}"></strong>-->
+<!--    </div>-->
+
+    <div id="products" class="row">
+        <div class="col col-sm-12 col-md-6 col-lg-4" th:each="prod,iterStat : ${products}">
+            <div class="card">
+                <img class="" src="http://placehold.it/400x250/000/fff" th:attr="src='/static/img/product_' + ${prod.id} + '.jpg'" alt="" />
+                <div class="card-header">
+                    <h4 class="card-title" th:text="${prod.name}">Product name</h4>
+                    <p class="card-text" th:text="${prod.description}">Product description... </p>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
+                    </div>
+                    <div class="card-text" th:if="${user} !='guest'">
+                        <a class="btn btn-success buttonAddToCart"  th:attr="data-name=${prod.getName()}, data-price=${prod.getPrice()}, data-desc=${prod.getDescription()}, data-supplier=${prod.getSupplier().getName()}, data-prod_id=${prod.getId()}"  >Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer" th:replace="footer.html :: copy"></div>
+
+</body>
+</html>
